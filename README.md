@@ -1,2 +1,4 @@
-# astraeus-cmdb
-CMDB empower infrastructure management and provide visual management
+
+# Astraeus-CMDB
+
+Astraeus-CMDB empower infrastructure management and provide visual management.
