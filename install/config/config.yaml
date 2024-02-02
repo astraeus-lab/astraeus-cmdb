@@ -1,0 +1,37 @@
+config:
+  web:
+    port: 9999
+  db:
+    type: MySQL
+    host: db.example.com
+    user: root
+    passwd: root
+    dbName: astraeus_cmdb
+    option:
+      maxOpenConns: 50      # Set the maximum number of open connections to the database, default: 50
+      maxIdleConns: 15      # Set the maximum number of connections in the idle, default: 15
+      connMaxIdelTimeMin: 5 # Set the maximum amount of time a connection may be reused, default: 5
+  es:
+    endpoint:
+    - es.example1.com
+    - es.example2.com
+    - es.example3.com
+    user: root
+    passwd: root
+  log:
+    path: /var/log/astraeus-cmdb/cmdb.log # Set the log file path, default: /var/log/astraeus-cmdb/cmdb.log
+    level: info                           # Set log level(debug、info、warn、error), default: info
+    stdout: false                         # Simultaneously output logs to the Stdout, default: false
+  redis:
+    enable: false
+    endpoint:          # Connect in Redis cluster mode with two or more address
+    - 192.168.0.1:6379
+    - 192.168.0.2:6379
+    - 192.168.0.3:6379
+    user: root
+    passwd: root
+    option:
+      maxOpenConns: 30
+      maxIdleConns: 10
+      connMaxIdelTimeMin: 3
+apiServer:

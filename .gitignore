@@ -4,13 +4,20 @@
 # Log file
 *.log
 
+# Certificates
+*.pem
+
 # BlueJ files
 *.ctxt
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+bin/
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.nar
@@ -19,7 +26,8 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# VS Code files
+.vscode/
 
-*.idea
+# IntelliJ files
+.idea
