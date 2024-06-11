@@ -10,9 +10,9 @@ import (
 )
 
 type Response struct {
-	Code    int
-	Message string
-	Data    string
+	Code int    `json:"code"`
+	Data string `json:"data"`
+	Msg  string `json:"msg"`
 }
 
 type postJSONData interface {
@@ -31,10 +31,4 @@ func getPostJSONData[T postJSONData](c *gin.Context, out T) error {
 	}
 
 	return nil
-}
-
-func checkErr(c *gin.Context, err error) {
-	if err != nil {
-		_ = c.Error(err)
-	}
 }

@@ -16,7 +16,11 @@ import (
 
 func ListModelHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	res, err := v1.NewModelManager(v1.NewOptions{}).List()
 	if err != nil && !util.IsNotFoundErr(err) {
@@ -29,7 +33,11 @@ func ListModelHandler(c *gin.Context) {
 
 func ModelDetailListHandler(c *gin.Context) {
 	var listErr error
-	defer checkErr(c, listErr)
+	defer func() {
+		if listErr != nil {
+			_ = c.Error(listErr)
+		}
+	}()
 
 	detailType, modelUID := c.Query("type"), c.Param("modelUID")
 	switch strings.ToUpper(detailType) {
@@ -68,7 +76,11 @@ func ModelDetailListHandler(c *gin.Context) {
 
 func GetModelByUIDHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid := c.Param("modelUID")
 	withData := util.Str2Bool(c.Query("withData"))
@@ -83,7 +95,11 @@ func GetModelByUIDHandler(c *gin.Context) {
 
 func CreateModelHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	source := &model.Metadata{}
 	if err = getPostJSONData(c, source); err != nil {
@@ -110,7 +126,11 @@ func CreateModelHandler(c *gin.Context) {
 
 func DeleteModelByUIDHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid := c.Param("modelUID")
 	if err = v1.NewModelManager(v1.NewOptions{}).Delete(uid); err != nil {
@@ -128,7 +148,11 @@ func DeleteModelByUIDHandler(c *gin.Context) {
 
 func UpdateModelByUIDHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	source := &model.Metadata{}
 	if err = getPostJSONData(c, source); err != nil {

@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"github.com/astraeus-lab/astraeus-cmdb/src/common/config"
 	"strings"
 	"time"
 
@@ -29,15 +30,16 @@ type dbConenctParam struct {
 	dbName  string
 }
 
-func newDBConnectParam(dbType, user, passwd, host, dbName string) *dbConenctParam {
-	addressAndPort := strings.Split(host, ":")
+func newDBConnectParam(c *config.DB) *dbConenctParam {
+	addressAndPort := strings.Split(c.Host, ":")
+
 	return &dbConenctParam{
-		dbType:  dbType,
-		user:    user,
-		passwd:  passwd,
+		dbType:  c.Type,
+		user:    c.User,
+		passwd:  c.Passwd,
 		address: addressAndPort[0],
 		port:    addressAndPort[1],
-		dbName:  dbName,
+		dbName:  c.DBName,
 	}
 }
 

@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"github.com/astraeus-lab/astraeus-cmdb/src/common/config"
 	"strings"
 	"time"
 
@@ -18,19 +19,20 @@ var defaultRedisConnect redis.UniversalClient
 //
 // All Key of Redis have a default expiration time of 1 hour
 // and are maintained and updated by goroutine.
-func InitRedisClient(endpoint []string, user, passwd, clientPrefix string, maxConn, maxIdelConn, coonMaxIdel int) error {
+func InitRedisClient(c *config.Redis, clientPrefix string) error {
 	defaultRedisConnect = redis.NewUniversalClient(&redis.UniversalOptions{
-		Addrs:      endpoint,
-		Username:   user,
-		Password:   passwd,
+		Addrs:      c.Endpoint,
+		Username:   c.User,
+		Password:   c.Passwd,
 		DB:         0,
 		ClientName: strings.Join([]string{clientPrefix, util.RandStr(5)}, "-"),
+		// MasterName: c.MasterName,
 
 		PoolFIFO:        true,
-		PoolSize:        maxConn,
-		MaxIdleConns:    maxIdelConn,
-		MinIdleConns:    maxIdelConn / 2,
-		ConnMaxIdleTime: time.Duration(coonMaxIdel) * time.Minute,
+		PoolSize:        c.Option.MaxOpenConns,
+		MaxIdleConns:    c.Option.MaxIdleConns,
+		MinIdleConns:    c.Option.MaxIdleConns / 2,
+		ConnMaxIdleTime: time.Duration(c.Option.ConnMaxIdleTimeMin) * time.Minute,
 	})
 
 	return nil
@@ -46,4 +48,9 @@ func InitRedisClient(endpoint []string, user, passwd, clientPrefix string, maxCo
 func GetCacheConnect() redis.UniversalClient {
 
 	return defaultRedisConnect
+}
+
+func Close() error {
+
+	return defaultRedisConnect.Close()
 }

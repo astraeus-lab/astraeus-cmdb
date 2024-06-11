@@ -12,7 +12,11 @@ import (
 
 func ListAssociationStatusHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	res, err := v1.NewAssociationStatusManager(v1.NewOptions{}).List()
 	if err != nil && !util.IsNotFoundErr(err) {
@@ -25,7 +29,11 @@ func ListAssociationStatusHandler(c *gin.Context) {
 
 func GetAssociationStatusHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid := c.Param("associationStatusUID")
 	res, err := v1.NewAssociationStatusManager(v1.NewOptions{}).Retrivev(uid)
@@ -39,7 +47,11 @@ func GetAssociationStatusHandler(c *gin.Context) {
 
 func CreateAssociationStatusHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	source := &model.AssociationStatus{}
 	if err = getPostJSONData(c, source); err != nil {
@@ -60,7 +72,11 @@ func CreateAssociationStatusHandler(c *gin.Context) {
 
 func DeleteAssociationStatusHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid := c.Param("associationStatusUID")
 	if err = v1.NewAssociationStatusManager(v1.NewOptions{}).Delete(uid); err != nil {
@@ -78,7 +94,11 @@ func DeleteAssociationStatusHandler(c *gin.Context) {
 
 func UpdateAssociationStatusHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	source := &model.AssociationStatus{}
 	if err = getPostJSONData(c, source); err != nil {

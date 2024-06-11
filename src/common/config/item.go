@@ -3,16 +3,21 @@ package config
 // CoreConfig configure Astreaeus-CMDB core.
 type CoreConfig struct {
 	Web Web `json:"web" yaml:"web"`
-
-	DB  DB  `json:"db" yaml:"db"`
-	ES  ES  `json:"es" yaml:"es"`
 	Log Log `json:"log" yaml:"log"`
 
+	DB    DB    `json:"db" yaml:"db"`
+	ES    ES    `json:"es" yaml:"es"`
 	Redis Redis `json:"redis,omitempty" yaml:"redis,omitempty"`
 }
 
 type Web struct {
 	Port int `json:"port,omitempty" yaml:"port,omitempty"`
+}
+
+type Log struct {
+	Path   string `json:"path,omitempty" yaml:"path,omitempty"`
+	Level  string `json:"level,omitempty" yaml:"level,omitempty"`
+	Stdout bool   `json:"stdout,omitempty" yaml:"stdout,omitempty"`
 }
 
 type DB struct {
@@ -37,12 +42,6 @@ type ES struct {
 	Passwd   string   `json:"passwd" yaml:"passwd"`
 }
 
-type Log struct {
-	Path   string `json:"path,omitempty" yaml:"path,omitempty"`
-	Level  string `json:"level,omitempty" yaml:"level,omitempty"`
-	Stdout bool   `json:"stdout,omitempty" yaml:"stdout,omitempty"`
-}
-
 type Redis struct {
 	Enable   bool     `json:"enable" yaml:"enable"`
 	Endpoint []string `json:"endpoint" yaml:"endpoint"`
@@ -56,6 +55,10 @@ type RedisOption struct {
 	MaxOpenConns       int `json:"maxOpenConns,omitempty" yaml:"maxOpenConns,omitempty"`
 	MaxIdleConns       int `json:"maxIdleConns,omitempty" yaml:"maxIdleConns,omitempty"`
 	ConnMaxIdleTimeMin int `json:"connMaxIdleTimeMin,omitempty" yaml:"connMaxIdleTimeMin,omitempty"`
+}
+
+// APIServerConfig configure Astreaeus-CMDB API Server.
+type APIServerConfig struct {
 }
 
 // completeConfig check the optional configuration is empty,
@@ -89,8 +92,4 @@ func (cc *CoreConfig) completeConfig() {
 			cc.Redis.Option.ConnMaxIdleTimeMin = DefaultConfigRedisConnMaxIdleTimeMin
 		}
 	}
-}
-
-// APIServerConfig configure Astreaeus-CMDB API Server.
-type APIServerConfig struct {
 }

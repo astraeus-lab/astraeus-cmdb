@@ -12,7 +12,11 @@ import (
 
 func GetModelFiledHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid, fieldUID := c.Param("modelUID"), c.Query("fieldUID")
 	res, err := v1.NewModelField(uid, v1.NewOptions{}).RetrieveField(fieldUID)
@@ -26,7 +30,11 @@ func GetModelFiledHandler(c *gin.Context) {
 
 func CreateModelFiledHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	source := &model.Field{}
 	if err = getPostJSONData(c, source); err != nil {
@@ -50,7 +58,11 @@ func CreateModelFiledHandler(c *gin.Context) {
 
 func DeleteModelFiledHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid, fieldUID := c.Param("modelUID"), c.Query("fieldUID")
 	if err = v1.NewModelField(uid, v1.NewOptions{}).DeleteField(fieldUID); err != nil {
@@ -68,7 +80,11 @@ func DeleteModelFiledHandler(c *gin.Context) {
 
 func UpdateModelFiledHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	source := &model.Field{}
 	if err = getPostJSONData(c, source); err != nil {
@@ -94,7 +110,11 @@ func UpdateModelFiledHandler(c *gin.Context) {
 
 func GetModelResourceHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid, resourceUID := c.Param("modelUID"), c.Query("resourceUID")
 	res, err := v1.NewModelResource(uid, v1.NewOptions{}).RetrieveResource(resourceUID)
@@ -108,7 +128,11 @@ func GetModelResourceHandler(c *gin.Context) {
 
 func CreateModelResourceHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	source := &model.Resource{}
 	if err = getPostJSONData(c, source); err != nil {
@@ -132,7 +156,11 @@ func CreateModelResourceHandler(c *gin.Context) {
 
 func DeleteModelResourceHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid, resourceUID := c.Param("modelUID"), c.Query("resourceUID")
 	if err = v1.NewModelResource(uid, v1.NewOptions{}).DeleteResource(resourceUID); err != nil {
@@ -150,7 +178,11 @@ func DeleteModelResourceHandler(c *gin.Context) {
 
 func UpdateModelResourceHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	source := &model.Resource{}
 	if err = getPostJSONData(c, source); err != nil {
@@ -176,7 +208,11 @@ func UpdateModelResourceHandler(c *gin.Context) {
 
 func GetModelAssociationHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid, associationStatusUID := c.Param("modelUID"), c.Query("associationStatusUID")
 	res, err := v1.NewModelAssociation(uid, v1.NewOptions{}).RetrieveAssociation(associationStatusUID)
@@ -190,7 +226,11 @@ func GetModelAssociationHandler(c *gin.Context) {
 
 func CreateModelAssociationHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid := c.Param("modelUID")
 	relateModelUID, associationStatusUID := c.Query("relateModelUID"), c.Query("associationStatusUID")
@@ -210,7 +250,11 @@ func CreateModelAssociationHandler(c *gin.Context) {
 
 func DeleteModelAssociationHandler(c *gin.Context) {
 	var err error
-	defer checkErr(c, err)
+	defer func() {
+		if err != nil {
+			_ = c.Error(err)
+		}
+	}()
 
 	uid, associationStatusUID := c.Param("modelUID"), c.Query("associationStatusUID")
 	if err = v1.NewModelAssociation(uid, v1.NewOptions{}).DeleteAssociation(associationStatusUID); err != nil {

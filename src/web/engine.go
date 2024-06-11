@@ -45,19 +45,18 @@ func accessLogWithFormatter() gin.HandlerFunc {
 }
 
 func customRecovery() gin.HandlerFunc {
+
 	return func(c *gin.Context) {
+		startTime := time.Now()
+
 		defer func() {
 			if err := recover(); err != nil {
-				startTime := time.Now()
-				c.Next()
-				latencyTime := time.Now().Sub(startTime).Milliseconds()
-
 				log.Error(c.ClientIP(),
 					"Method", c.Request.Method,
 					"URI", c.Request.RequestURI,
 					"Protocol", c.Request.Proto,
 					"Status", c.Writer.Status(),
-					"Latency", latencyTime,
+					"Latency", time.Now().Sub(startTime).Milliseconds(),
 					"Host", c.Request.Host,
 					"UA", c.Request.UserAgent(),
 					"Referer", c.Request.Referer(),
@@ -65,7 +64,11 @@ func customRecovery() gin.HandlerFunc {
 					"Error", util.StrWithDefault(c.Errors.String(), "-"),
 				)
 
-				c.JSON(http.StatusInternalServerError, "")
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"code": http.StatusInternalServerError,
+					"data": "",
+					"msg":  "oops, some unknown errors have occurred inside the server",
+				})
 				c.Abort()
 			}
 		}()

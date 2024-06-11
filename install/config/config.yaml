@@ -1,6 +1,10 @@
 config:
   web:
     port: 9999
+  log:
+    path: /var/log/astraeus-cmdb/cmdb.log # Set the log file path, default: /var/log/astraeus-cmdb/cmdb.log
+    level: info                           # Set log level(debug、info、warn、error), default: info
+    stdout: false                         # Simultaneously output logs to the Stdout, default: false
   db:
     type: MySQL
     host: db.example.com
@@ -18,13 +22,11 @@ config:
     - es.example3.com
     user: root
     passwd: root
-  log:
-    path: /var/log/astraeus-cmdb/cmdb.log # Set the log file path, default: /var/log/astraeus-cmdb/cmdb.log
-    level: info                           # Set log level(debug、info、warn、error), default: info
-    stdout: false                         # Simultaneously output logs to the Stdout, default: false
   redis:
+    # The number of endpoints set determines whether the Redis client type is single node or cluster,
+    # Redis sentinel mode is not currently supported.
     enable: false
-    endpoint:          # Connect in Redis cluster mode with two or more address
+    endpoint:
     - 192.168.0.1:6379
     - 192.168.0.2:6379
     - 192.168.0.3:6379

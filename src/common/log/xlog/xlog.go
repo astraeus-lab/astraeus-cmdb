@@ -22,7 +22,7 @@ type XLog struct {
 // NewXLog create a logger based on config.
 // Based on log/slog, level param affects the output level of the log.
 func NewXLog(dest string, level string, isStdout bool) (*XLog, error) {
-	file, err := os.OpenFile(dest, os.O_APPEND, os.ModeAppend)
+	file, err := os.OpenFile(dest, os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		return nil, fmt.Errorf("open %s log file err: %v", dest, err)
 	}

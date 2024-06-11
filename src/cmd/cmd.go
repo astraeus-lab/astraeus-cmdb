@@ -10,10 +10,11 @@ const (
 func ParseCMDParam() *Param {
 	rest := &Param{}
 
-	rest.ConfigPath = *flag.String(
+	flag.StringVar(
+		&rest.ConfigPath,
 		ConfigPathFlag,
 		"./config.yaml",
-		"specify the config file path, default: ./config.yaml",
+		"Specify the config file path, can be yaml or json",
 	)
 
 	return rest

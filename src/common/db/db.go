@@ -4,6 +4,7 @@
 package db
 
 import (
+	"github.com/astraeus-lab/astraeus-cmdb/src/common/config"
 	"time"
 
 	"gorm.io/gorm"
@@ -15,8 +16,8 @@ var defaultDBConnect *gorm.DB
 //
 // Turn off automatic table creation in the program,
 // table management should rely on external initialization.
-func InitDBConnectPool(dbType, host, user, passwd, dbName string, maxConn, maxIdelConn, coonMaxIdel int) (err error) {
-	defaultDBConnect, err = initDefaultConnectByDBType(newDBConnectParam(dbType, user, passwd, host, dbName))
+func InitDBConnectPool(c *config.DB) (err error) {
+	defaultDBConnect, err = initDefaultConnectByDBType(newDBConnectParam(c))
 	if err != nil {
 		return
 	}
@@ -26,9 +27,9 @@ func InitDBConnectPool(dbType, host, user, passwd, dbName string, maxConn, maxId
 		return
 	}
 
-	connect.SetMaxOpenConns(maxConn)
-	connect.SetMaxIdleConns(maxIdelConn)
-	connect.SetConnMaxIdleTime(time.Duration(coonMaxIdel) * time.Minute)
+	connect.SetMaxOpenConns(c.Option.MaxOpenConns)
+	connect.SetMaxIdleConns(c.Option.MaxIdleConns)
+	connect.SetConnMaxIdleTime(time.Duration(c.Option.ConnMaxIdleTimeMin) * time.Minute)
 
 	return
 }
