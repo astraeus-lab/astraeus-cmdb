@@ -37,19 +37,19 @@ func NewXLog(dest string, level string, isStdout bool) (*XLog, error) {
 }
 
 func (x *XLog) Debug(mgs string, arg ...any) {
-	x.logger.Debug(mgs, arg)
+	x.logger.Debug(mgs, arg...)
 }
 
 func (x *XLog) Info(mgs string, arg ...any) {
-	x.logger.Info(mgs, arg)
+	x.logger.Info(mgs, arg...)
 }
 
 func (x *XLog) Warn(mgs string, arg ...any) {
-	x.logger.Warn(mgs, arg)
+	x.logger.Warn(mgs, arg...)
 }
 
 func (x *XLog) Error(mgs string, arg ...any) {
-	x.logger.Error(mgs, arg)
+	x.logger.Error(mgs, arg...)
 }
 
 // converLogLevel convert custom log levels to log/slog format.

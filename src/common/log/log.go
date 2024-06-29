@@ -2,8 +2,8 @@ package log
 
 import (
 	"fmt"
-	"github.com/astraeus-lab/astraeus-cmdb/src/common/config"
 
+	"github.com/astraeus-lab/astraeus-cmdb/src/common/config"
 	"github.com/astraeus-lab/astraeus-cmdb/src/common/log/xlog"
 	"github.com/astraeus-lab/astraeus-cmdb/src/common/util"
 )
@@ -11,10 +11,10 @@ import (
 var (
 	defaultLogger *xlog.XLog
 
-	Debug = defaultLogger.Debug
-	Info  = defaultLogger.Info
-	Warn  = defaultLogger.Warn
-	Error = defaultLogger.Error
+	Debug func(msg string, arg ...any)
+	Info  func(msg string, arg ...any)
+	Warn  func(msg string, arg ...any)
+	Error func(msg string, arg ...any)
 )
 
 // InitLogger init different level of logger based on config.
@@ -30,6 +30,14 @@ func InitLogger(c *config.Log) error {
 	if err != nil {
 		return err
 	}
+	initLevelLogger()
 
 	return nil
+}
+
+func initLevelLogger() {
+	Debug = defaultLogger.Debug
+	Info = defaultLogger.Info
+	Warn = defaultLogger.Warn
+	Error = defaultLogger.Error
 }

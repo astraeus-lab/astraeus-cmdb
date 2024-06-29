@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"log"
@@ -8,10 +9,11 @@ import (
 	"strconv"
 
 	"github.com/astraeus-lab/astraeus-cmdb/src/common/config"
+	"github.com/astraeus-lab/astraeus-cmdb/src/common/constant"
 	"github.com/astraeus-lab/astraeus-cmdb/src/common/util/http/server"
 )
 
-func StartWeb(c *config.Web) {
+func StartWeb(ctx context.Context, c *config.Web) {
 	srv := &http.Server{
 		Addr:                         fmt.Sprintf(":%s", strconv.Itoa(c.Port)),
 		Handler:                      NewEngine(),
@@ -27,7 +29,7 @@ func StartWeb(c *config.Web) {
 		ConnContext:                  nil,
 	}
 
-	if err := server.StartSrvWithGracefulShutdown(srv); err != nil {
+	if err := server.StartSrvWithGracefulShutdown(ctx, srv, constant.GraceShutdownTimeout); err != nil {
 		return
 	}
 }

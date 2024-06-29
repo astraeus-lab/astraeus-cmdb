@@ -17,5 +17,7 @@ func ParseCMDParam() *Param {
 		"Specify the config file path, can be yaml or json",
 	)
 
+	flag.Parse()
+
 	return rest
 }

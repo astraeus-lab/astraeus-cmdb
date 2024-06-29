@@ -4,10 +4,11 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 	"time"
+)
+
+const (
+	graceShutdownTimeout = 30
 )
 
 // StartSrvWithGracefulShutdown start the incoming http.Server with
@@ -15,20 +16,20 @@ import (
 //
 // It will block the caller to enable listening
 // and processing of the shutdown signal.
-func StartSrvWithGracefulShutdown(srv *http.Server) (err error) {
+func StartSrvWithGracefulShutdown(ctx context.Context, srv *http.Server, graceShutdownTime int) (err error) {
 	go func() {
 		if err = srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			return
 		}
 	}()
 
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	shutdownCtx, cancel := context.WithTimeout(ctx, time.Duration(graceShutdownTime)*time.Second)
 	defer cancel()
-	if err = srv.Shutdown(ctx); err != nil {
-		return
+	select {
+	case <-ctx.Done():
+		if err = srv.Shutdown(shutdownCtx); err != nil {
+			return
+		}
 	}
 
 	return
