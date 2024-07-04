@@ -5,13 +5,7 @@ import (
 	"io"
 	"log/slog"
 	"os"
-)
-
-const (
-	DebugLevel string = "debug"
-	InfoLevel  string = "info"
-	WarnLevel  string = "warn"
-	ErrorLevel string = "error"
+	"strings"
 )
 
 // XLog multiple level of logger.
@@ -55,15 +49,16 @@ func (x *XLog) Error(mgs string, arg ...any) {
 // converLogLevel convert custom log levels to log/slog format.
 // If the log level is not recognized, it defaults to slog.LevelInfo.
 func converLogLevel(level string) slog.Level {
-	switch level {
-	case DebugLevel:
+	switch LogLevel(strings.ToUpper(level)) {
+	case DebugLogLevel:
 		return slog.LevelDebug
-	case InfoLevel:
+	case InfoLogLevel:
 		return slog.LevelInfo
-	case WarnLevel:
+	case WarnLogLevel:
 		return slog.LevelWarn
-	case ErrorLevel:
+	case ErrorLogLevel:
 		return slog.LevelError
+
 	default:
 		return slog.LevelInfo
 	}

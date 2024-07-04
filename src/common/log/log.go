@@ -19,23 +19,30 @@ var (
 
 // InitLogger init different level of logger based on config.
 // Parame level determines the log output level.
-func InitLogger(c *config.Log) error {
-	// path string, level string, isStdout bool
-	if util.IsFileExistOrCreate(c.Path) != nil || !util.IsFilePermission(c.Path) {
-		return fmt.Errorf("%s path log file may have error in exist, create or permission", c.Path)
-	}
-
-	var err error
-	defaultLogger, err = xlog.NewXLog(c.Path, c.Level, c.Stdout)
-	if err != nil {
+func InitLogger(c *config.Log) (err error) {
+	if defaultLogger, err = InitCustomLogger(c.Path, c.Level, c.Stdout); err != nil {
 		return err
 	}
-	initLevelLogger()
+	initPackageLogger()
 
 	return nil
 }
 
-func initLevelLogger() {
+func InitCustomLogger(path string, level string, isStdout bool) (*xlog.XLog, error) {
+	if util.IsFileExistOrCreate(path) != nil || !util.IsFilePermission(path) {
+		return nil, fmt.Errorf("log file(%s) may have creation or permission err", path)
+	}
+
+	var err error
+	logger, err := xlog.NewXLog(path, level, isStdout)
+	if err != nil {
+		return nil, err
+	}
+
+	return logger, nil
+}
+
+func initPackageLogger() {
 	Debug = defaultLogger.Debug
 	Info = defaultLogger.Info
 	Warn = defaultLogger.Warn
